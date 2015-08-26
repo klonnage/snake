@@ -1,19 +1,15 @@
 CXX = g++
-CXXFLAGS = -std=c++11
-SRC=src/*.cpp
+CXXFLAGS = -std=c++11 -lsfml-window -lsfml-graphics -lsfml-system
 BIN=bin
 EXEC=bin/snake
-OBJ=obj/*.o
+OBJ=$(SRC:.cpp=.o)
 
 
 all: $(EXEC)
 	bin/snake
 
-$(EXEC): $(OBJ)
-	g++ -o $@ $< $(CXXFLAGS)
-
-$(OBJ): $(SRC)
-	g++ -o $@ -c $< $(CXXFLAGS)
+$(EXEC): src/*.hpp src/*.cpp
+	g++ $^ -o $@ $(CXXFLAGS)
 
 clean:
 	rm -rf $(OBJ)
