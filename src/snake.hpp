@@ -1,18 +1,22 @@
 #ifndef SNAKE_DEF
 #define SNAKE_DEF
 #include <list>
+#include "direction.hpp"
+#include "constantes.hpp"
 
 class Snake{
 	std::list<int> snake;
-	int grow, headID, queueID, direction;
+	int grow, headID, queueID;
+	Direction direction;
 public:
-	Snake(int middleID):grow(3), headID(middleID),
-		queueID(middleID), direction(BAS)
+	Snake(int middleID, Direction const& direction):grow(3),
+		headID(middleID), queueID(middleID),
+		direction(direction)
 	{}
 
 	void move()
 	{
-		headID += direction;
+		headID += direction.nextID();
 		snake.push_back(headID);
 		if(grow)
 		{
@@ -23,8 +27,8 @@ public:
 		snake.pop_front();
 	}
 	
-	void changeDirection(int newDirection)
-	{direction = newDirection;}
+	void changeDirection(Orientation newOrientation)
+	{direction.setOrientation(newOrientation);}
 	
 	void growUp()
 	{grow += 3;}
