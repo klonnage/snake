@@ -2,15 +2,15 @@
 #include "world.hpp"
 #include "camera.hpp"
 #include "direction.hpp"
-#include "interactor.hpp"
 #include <cstdlib>
 #include <utility>
 #include <SFML/System.hpp>
 
 int main(int argc, char** argv)
 {
+	std::pair<int, int> dimension(18, 18);
 	//defintion
-	Map map;
+	Map map(dimension);
 	Direction direction(map, UP);
 	//creation of the snake
 	std::pair<int, int> dim = map.getDimension();
@@ -26,8 +26,11 @@ int main(int argc, char** argv)
 	
 	Data data(map, snake, generator);
 	World world(data);
-	Camera camera(data);
-	Interactor interactor(snake);
+	Camera camera(data, world);
+	
+	//make a clock in order to make a pause to have a game in 60Hz
+	sf::Clock clock;
+	sf::Time delta, fps = sf::milliseconds(100);
 	
 	//main loop
 	while(world.getState() == GAME_CONTINUE)
@@ -36,10 +39,13 @@ int main(int argc, char** argv)
 		world.update();
 		//draw a render od the game state
 		camera.draw();
-		//interct with game
-		interactor.interact();
+		//interact with game
+		camera.interact();
 		//do a pause
-		sf::sleep(sf::milliseconds(100));
+		sf::sleep(fps);
+		delta = clock.getElapsedTime();
+		//restart the clock
+		clock.restart();
 	}
 	return EXIT_SUCCESS;
 }
