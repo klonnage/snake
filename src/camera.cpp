@@ -48,3 +48,42 @@ void Camera::draw()
 	//update the window on the screen
 	window.display();
 }
+
+void Camera::interact()
+{
+	bool haveChangedOrientation = false;
+	//flush the event queue
+	while(window.pollEvent(event))
+	{
+		//Keyboard event
+		if(event.type == sf::Event::KeyPressed)
+		{
+			//verify the key
+			switch(event.key.code)
+			{
+				case sf::Keyboard::Down:
+					if(!haveChangedOrientation)
+						data.snake.changeDirection(DOWN);
+					haveChangedOrientation = true;
+					break;
+				case sf::Keyboard::Up:
+					if(!haveChangedOrientation)
+						data.snake.changeDirection(UP);
+					haveChangedOrientation = true;
+					break;
+				case sf::Keyboard::Right:
+					if(!haveChangedOrientation)
+						data.snake.changeDirection(RIGHT);
+					haveChangedOrientation = true;
+					break;
+				case sf::Keyboard::Left:
+					if(!haveChangedOrientation)
+						data.snake.changeDirection(LEFT);
+					haveChangedOrientation = true;
+					break;
+				default:
+					break;
+			}
+		}
+	}
+}
